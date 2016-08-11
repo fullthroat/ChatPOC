@@ -1,0 +1,33 @@
+package com.lollibond.chat.server;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.domain.PageRequest;
+
+import com.corundumstudio.socketio.AckRequest;
+import com.corundumstudio.socketio.Configuration;
+import com.corundumstudio.socketio.SocketIOClient;
+import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.listener.ConnectListener;
+import com.corundumstudio.socketio.listener.DataListener;
+import com.corundumstudio.socketio.listener.DisconnectListener;
+import com.google.gson.Gson;
+import com.lollibond.chat.data.NotificationsPayload;
+import com.lollibond.chat.data.RegisterPayload;
+import com.lollibond.chat.data.ThreadParam;
+import com.lollibond.chat.domain.MessageThread121;
+import com.lollibond.chat.repo.MessageThreadRepository;
+import com.lollibond.chat.service.ThreadService;
+
+public class DynamicChatServer implements CommandLineRunner{
+
+
+
+}

@@ -1,0 +1,14 @@
+package com.lollibond.chat.domain;
+
+import java.util.Date;
+
+public class MessageThread {
+
+
+	String tid;
+	Date ts;
+	String msg;
+	String attachement;
+	String fromuid;
+	
+}

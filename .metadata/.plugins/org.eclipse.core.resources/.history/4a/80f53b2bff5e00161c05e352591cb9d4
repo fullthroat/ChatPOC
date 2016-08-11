@@ -1,0 +1,36 @@
+package com.lollibond.chat.repo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.lollibond.chat.domain.ChatMessage;
+
+public class MessageThreadsRepository {
+
+	String serverIp = "127.0.0.1";
+	String keyspace = "pigeon";
+	Cluster cluster = Cluster.builder().addContactPoints(serverIp).withPort(9042).build();
+	Session session = cluster.connect(keyspace);
+	
+	public void saveMessage(ChatMessage chatMessage){
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("insert into message_thread_121 (u1,u2,time,body,fromuser) values('").append(chatMessage.getU1())
+				.append("','").append(chatMessage.getU2()).append("',").append(System.currentTimeMillis()).append(",'")
+				.append(chatMessage.getBody()).append("','").append(chatMessage.getFromUser()).append("');");
+		session.execute(builder.toString());
+		System.out.println(builder.toString());
+
+		cluster.close();
+		session.close();
+	}
+	
+	public List<ChatMessage> fetchThread(String tid){
+		
+		return null;
+	}
+	
+}

@@ -1,0 +1,17 @@
+1468218373959	Rename package 'com.lollibond.company'
+1468218417671	Rename type 'CreateCompanyListener'
+1468321752996	Delete element
+1468321758189	Delete element
+1468321764622	Delete element
+1468321770061	Delete element
+1468321774558	Delete element
+1468323580054	Rename type 'LaunchConsumer'
+1468323664571	Rename package 'com.lollibondchat.listener.data.entity'
+1468325092017	Rename field 'message'
+1468325675006	Rename type 'HelloKafkaConsumer'
+1468327964580	Rename field 'refactor'
+1468329307137	Rename type 'ConsumerListerner'
+1468408238181	Rename type 'LollibondCompanyListenersApplication'
+1468409014438	Rename type 'ListnerManager'
+1468409935891	Rename package 'com.lollibondchat.listener.listener'
+1468420364864	Delete element

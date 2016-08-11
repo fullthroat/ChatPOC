@@ -1,0 +1,9 @@
+package com.lollibond.chat.domain;
+
+public class MessageThread {
+
+	String tid;
+	String participants_list;
+	
+	
+}

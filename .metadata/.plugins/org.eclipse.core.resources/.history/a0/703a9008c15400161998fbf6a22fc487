@@ -1,0 +1,30 @@
+package com.lollibond.chat.data;
+
+public class RegisterPayload {
+		
+	String userId;
+	String sessionid;
+	String initialmessage;
+	
+	
+	public String getUsername() {
+		return userId;
+	}
+	public void setUsername(String username) {
+		this.userId = username;
+	}
+	public String getSessionid() {
+		return sessionid;
+	}
+	public void setSessionid(String sessionid) {
+		this.sessionid = sessionid;
+	}
+	public String getInitialmessage() {
+		return initialmessage;
+	}
+	public void setInitialmessage(String initialmessage) {
+		this.initialmessage = initialmessage;
+	}
+	
+	
+}

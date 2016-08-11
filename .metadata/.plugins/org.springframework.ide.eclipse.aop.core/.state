@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="netty-socketio"/>
+<aop-project name="keycloak-tutorial"/>
+<aop-project name="pigeon"/>
+</aop-reference-model>

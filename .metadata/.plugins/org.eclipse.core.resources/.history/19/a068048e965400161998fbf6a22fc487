@@ -1,0 +1,16 @@
+package com.lollibond.chat.domain;
+
+
+/*@Table(value="chat_messages_121")*/
+public class MessageHistory121 {
+
+	
+    private UUID message_id;
+    
+    private String from_user;
+    private String to_user;
+    private String body;
+    private String time;
+    
+	
+}

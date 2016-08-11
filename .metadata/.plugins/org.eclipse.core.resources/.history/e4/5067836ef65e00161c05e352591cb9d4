@@ -1,0 +1,10 @@
+package com.lollibond.chat.repo;
+
+public class ThreadListRepository {
+	
+	String tid;
+	String participants_list;
+	String name;
+	String admin_list;
+
+}

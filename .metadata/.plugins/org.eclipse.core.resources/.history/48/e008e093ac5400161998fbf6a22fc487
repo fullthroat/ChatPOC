@@ -1,0 +1,25 @@
+package com.lollibond.chat.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.lollibond.chat.domain.MessageThread121;
+import com.lollibond.chat.repo.MessageThreadRepository;
+import com.lollibond.chat.service.ThreadService;
+
+public class ThreadServiceImpl implements ThreadService {
+
+	@Autowired
+	private MessageThreadRepository messageThreadRepository;
+
+	public boolean saveMessageToThread(String message, String fromUser, String toUser) {
+
+		return true;
+	}
+
+	public List<MessageThread121> pullThread(String fromUser, String toUser){
+		return messageThreadRepository.findByFromUserAndToUser(fromUser, toUser);
+		
+	}
+}

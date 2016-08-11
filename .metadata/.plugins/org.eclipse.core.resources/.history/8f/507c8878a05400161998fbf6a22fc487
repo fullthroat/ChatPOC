@@ -1,0 +1,7 @@
+package com.lollibond.chat.domain;
+
+import java.io.Serializable;
+
+public class ThreadId implements Serializable {
+
+}

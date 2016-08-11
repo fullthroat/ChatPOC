@@ -1,0 +1,14 @@
+package com.lollibond.chat.data;
+
+public class ThreadParam {
+
+	String fromUser;
+	String toUser;
+	/*Optional*/
+	int pageNumber;
+	int pageSize;
+
+
+	
+
+}

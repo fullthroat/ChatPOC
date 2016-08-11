@@ -1,0 +1,25 @@
+package com.lollibond.chat.domain;
+
+import java.util.UUID;
+
+import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.data.cassandra.mapping.Table;
+
+@Table(value = "message_thread_121")
+public class MessageThread121 {
+
+	private UUID messageId;
+	private String body;
+	@PrimaryKey
+	private ThreadId threadId;
+
+	public MessageThread121(UUID message_id, String body, ThreadId threadId) {
+		this.messageId = message_id;
+		this.body = body;
+		this.threadId = threadId;
+
+	}
+
+	
+
+}

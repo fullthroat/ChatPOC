@@ -1,0 +1,20 @@
+package com.lollibond.chat.repo;
+
+import java.util.List;
+
+import com.lollibond.chat.domain.ThreadDetail;
+
+public class ThreadDetailRepository {
+
+	
+	
+	public void saveThreadDetail(ThreadDetail threadDetail){
+		
+	}
+	
+	public List<ThreadDetail> fetchThreadDetail(String tid){
+		
+		return null;
+	}
+	
+}

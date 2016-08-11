@@ -1,0 +1,22 @@
+package com.lollibond.chat.repo;
+
+import com.lollibond.chat.domain.ThreadList;
+
+public class ThreadListRepository {
+	
+	
+	public boolean save(ThreadList threadList){
+		
+	
+		return true;
+	}
+	
+    public List<ThreadList> getThreadList(){
+    	
+    	return null;
+    }
+	
+	
+	
+	
+}

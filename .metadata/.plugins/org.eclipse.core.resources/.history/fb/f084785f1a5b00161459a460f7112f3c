@@ -1,0 +1,11 @@
+package com.lollibond.chat.data;
+
+public class NotificationsPayload {
+
+	String message;
+	String touid;
+	String type;
+	
+	
+	
+}

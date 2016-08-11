@@ -1,0 +1,16 @@
+package com.lollibond.chat.domain;
+
+
+import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.data.cassandra.mapping.Table;
+public class MessageHistory121 {
+
+	
+    private UUID message_id;
+    private String from_user;
+    private String to_user;
+    private String body;
+    private String time;
+    
+	
+}

@@ -1,0 +1,79 @@
+package com.lollibond.chat.data;
+
+public class ChatPayload {
+
+	String userName;
+	String message;
+	String toUser;
+
+	public ChatPayload() {
+	
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getToUser() {
+		return toUser;
+	}
+
+	public void setToUser(String toUser) {
+		this.toUser = toUser;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((message == null) ? 0 : message.hashCode());
+		result = prime * result + ((toUser == null) ? 0 : toUser.hashCode());
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChatPayload other = (ChatPayload) obj;
+		if (message == null) {
+			if (other.message != null)
+				return false;
+		} else if (!message.equals(other.message))
+			return false;
+		if (toUser == null) {
+			if (other.toUser != null)
+				return false;
+		} else if (!toUser.equals(other.toUser))
+			return false;
+		if (userName == null) {
+			if (other.userName != null)
+				return false;
+		} else if (!userName.equals(other.userName))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "ChatPayload [userName=" + userName + ", message=" + message + ", toUser=" + toUser + "]";
+	}
+
+}

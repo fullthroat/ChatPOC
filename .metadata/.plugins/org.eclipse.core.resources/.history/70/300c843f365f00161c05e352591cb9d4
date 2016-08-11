@@ -1,0 +1,52 @@
+package com.lollibond.chat.service;
+
+import java.util.List;
+import java.util.UUID;
+
+import com.lollibond.chat.domain.MessageThread;
+import com.lollibond.chat.domain.ThreadDetail;
+import com.lollibond.chat.domain.ThreadList;
+import com.lollibond.chat.repo.MessageThreadsRepository;
+import com.lollibond.chat.repo.ThreadDetailRepository;
+import com.lollibond.chat.repo.ThreadListRepository;
+
+public class GroupChatService {
+
+	private MessageThreadsRepository msgThreadRepository = new MessageThreadsRepository();
+	private ThreadDetailRepository threadDetailRepository = new ThreadDetailRepository();
+	private ThreadListRepository threadListRepository = new ThreadListRepository();
+
+	public String createGroup(String groupName, List<String> participants, List<String> admins) {
+		String tid = UUID.randomUUID().toString();
+		ThreadDetail threadDetail = new ThreadDetail();
+		threadDetail.setTid(tid);
+		threadDetail.setAdminsList(admins);
+		threadDetail.setParticipantsList(participants);
+		threadDetail.setName(groupName);
+		threadDetailRepository.saveThreadDetail(threadDetail);
+		return tid;
+	}
+
+	public List<ThreadList> getRecentGroupChats(String uid) {
+
+		return threadListRepository.getThreadListByUID(uid, 10);
+	}
+
+	public List<MessageThread> appendChatMessageToGroupThread(MessageThread thread) {
+		return null;
+	}
+
+	public List<ThreadDetail> addParticipantToGroup(String uid, String tid) {
+		return null;
+	}
+
+	public List<ThreadDetail> addAdminToGroup(String uid, String tid) {
+
+		return null;
+	}
+
+	public void deleteThread(String uid, String tid) {
+
+	}
+
+}

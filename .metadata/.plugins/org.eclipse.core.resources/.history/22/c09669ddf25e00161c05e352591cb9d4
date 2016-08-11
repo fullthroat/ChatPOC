@@ -1,0 +1,56 @@
+package com.lollibond.chat.service.impl;
+
+import com.lollibond.chat.service.ThreadService;
+
+/*@Component*/
+public class ThreadServiceImpl implements ThreadService {
+/*
+	@Autowired
+	private MessageThreadRepository_Old messageThreadRepository;
+
+	public boolean saveMessageToThread(String message, String fromUser, String toUser) {
+
+		MessageThread121 chatMessage = new MessageThread121();
+		ThreadId threadId = new ThreadId();
+		chatMessage.setBody(message);
+		if (fromUser != null && toUser != null) {
+			long user = Long.parseLong(fromUser);
+			long user2 = Long.parseLong(toUser);
+			if (user > user2) {
+				threadId.setU1(toUser);
+				threadId.setU2(fromUser);
+				chatMessage.setThreadId(threadId);
+			} else {
+				threadId.setU1(fromUser);
+				threadId.setU2(toUser);
+
+				chatMessage.setThreadId(threadId);
+			}
+		}
+		chatMessage.setFromUser(fromUser);
+		threadId.setTime(new Date());
+		try {
+			messageThreadRepository.save(chatMessage);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public List<MessageThread121> pullThread(String fromUser, String toUser, Pageable pageable) {
+		if (fromUser != null && toUser != null) {
+			long user = Long.parseLong(fromUser);
+			long user2 = Long.parseLong(toUser);
+			if (user > user2) {
+				return messageThreadRepository.findByU1AndU2(toUser, fromUser);
+
+			} else {
+				return messageThreadRepository.findByU1AndU2(fromUser, toUser);
+			}
+		}
+		return null;
+
+	}*/
+
+}

@@ -1,0 +1,13 @@
+package com.corundumstudio.socketio.demo;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.corundumstudio.socketio.SocketIOClient;
+
+public class ClientDocker {
+	
+	private static final Map<String, SocketIOClient> clientMap=new ConcurrentHashMap<String, SocketIOClient>();
+	
+
+}

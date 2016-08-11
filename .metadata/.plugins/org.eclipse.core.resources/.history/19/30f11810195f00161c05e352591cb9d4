@@ -1,0 +1,41 @@
+package com.lollibond.chat.repo;
+
+import java.util.List;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
+import com.lollibond.chat.domain.ThreadList;
+
+public class ThreadListRepository {
+	
+	String serverIp = "127.0.0.1";
+	String keyspace = "pigeon";
+	Cluster cluster = Cluster.builder().addContactPoints(serverIp).withPort(9042).build();
+	Session session = cluster.connect(keyspace);
+
+	public boolean save(ThreadList threadList) {
+
+		return true;
+	}
+
+	public List<ThreadList> getThreadListByUID(String uid) {
+
+		return null;
+	}
+	
+	public List<ThreadList> getDelteSetting(String uid, String tid){
+		
+		return null;
+	}
+
+	public boolean deleteChatThread(String TID) {
+
+		return true;
+	}
+	
+	public boolean updateRecentRead(String tid){
+	
+		return true;
+	}
+
+}

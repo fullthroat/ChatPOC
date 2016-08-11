@@ -1,0 +1,34 @@
+package com.lollibond.chat.repo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+
+public class MessageThreadRepository {
+	
+	
+	public List<String> getThread(String fromUser, String toUser){
+		
+		
+		String serverIp = "127.0.0.1";
+	    String keyspace = "pigeon";
+	    Cluster cluster = Cluster.builder()
+	            .addContactPoints(serverIp).withPort(9042)
+	            .build();
+
+	    Session session = cluster.connect(keyspace);
+
+	    List<String> messageThread=new ArrayList<String>();
+	    String cqlStatement = "Select * from message_thread_121";
+	    for (Row row : session.execute(cqlStatement)) {
+	        System.out.println(row.toString());
+	        messageThread.add(row.toString());
+	    }
+	    
+	    
+	}
+
+}

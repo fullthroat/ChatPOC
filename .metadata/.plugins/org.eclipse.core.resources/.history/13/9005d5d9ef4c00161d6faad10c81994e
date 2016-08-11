@@ -1,0 +1,5 @@
+package com.corundumstudio.socketio.demo;
+
+public class ProducerWorker {
+
+}

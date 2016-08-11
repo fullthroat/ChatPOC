@@ -1,0 +1,53 @@
+package com.lollibond.chat.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import org.springframework.cassandra.core.Ordering;
+import org.springframework.cassandra.core.PrimaryKeyType;
+import org.springframework.data.cassandra.mapping.PrimaryKeyClass;
+import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
+
+@PrimaryKeyClass
+public class ThreadId implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@PrimaryKeyColumn(name = "u1", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
+	private String u1;
+	@PrimaryKeyColumn(name = "u2", ordinal = 1, type = PrimaryKeyType.PARTITIONED)
+	private String u2;
+
+	@PrimaryKeyColumn(name = "time", ordinal = 2, type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
+	private Date time;
+
+	public String getU1() {
+		return u1;
+	}
+
+	public void setU1(String u1) {
+		this.u1 = u1;
+	}
+
+	public String getU2() {
+		return u2;
+	}
+
+	public void setU2(String u2) {
+		this.u2 = u2;
+	}
+
+	public Date getTime() {
+		return time;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
+	}
+
+
+
+}

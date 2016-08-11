@@ -1,0 +1,5 @@
+package com.lollibond.chat.domain;
+
+public class ThreadList {
+
+}

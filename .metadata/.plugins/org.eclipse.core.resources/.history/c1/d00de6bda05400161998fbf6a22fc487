@@ -1,0 +1,16 @@
+package com.lollibond.chat.domain;
+
+import java.io.Serializable;
+
+import org.springframework.data.cassandra.mapping.PrimaryKeyClass;
+
+@PrimaryKeyClass
+public class ThreadId implements Serializable {
+
+	@PrimaryKeyColumn(name = "person_id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
+	private String fromUser;
+	
+	private String toUser;
+	
+	private String time;
+}

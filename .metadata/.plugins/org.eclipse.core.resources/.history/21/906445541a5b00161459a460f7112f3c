@@ -1,0 +1,29 @@
+package com.lollibond.chat.data;
+
+public class NotificationsPayload {
+
+	String message;
+	String touid;
+	String type;
+	
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public String getTouid() {
+		return touid;
+	}
+	public void setTouid(String touid) {
+		this.touid = touid;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
+}

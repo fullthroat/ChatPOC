@@ -1,0 +1,6 @@
+spring.data.cassandra.keyspace-name=pigeon
+spring.data.cassandra.contact-points=172.17.0.1
+spring.data.cassandra.port=9042
+
+com.lollibond.pigeon.host=172.16.18.84
+com.lollibond.pigeon.port=5054

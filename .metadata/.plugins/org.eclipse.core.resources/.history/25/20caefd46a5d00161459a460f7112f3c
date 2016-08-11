@@ -1,0 +1,15 @@
+package com.lollibond.chat.repo;
+
+public class OTPRepository {
+
+	
+	public void save(String key, String value){
+		
+	}
+	
+	public boolean isExpiredToken(String ){
+		
+		return true;
+	}
+	
+}

@@ -1,0 +1,48 @@
+package com.lollibond.chat.repo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.lollibond.chat.domain.MessageThread121;
+
+public class MessageThreadRepository {
+
+	String serverIp = "127.0.0.1";
+	String keyspace = "pigeon";
+
+	public List<String> findByU1AndU2(String fromUser, String toUser) {
+
+		Cluster cluster = Cluster.builder().addContactPoints(serverIp).withPort(9042).build();
+
+		Session session = cluster.connect(keyspace);
+
+		List<String> messageThread = new ArrayList<String>();
+		StringBuilder builder = new StringBuilder("Select * from message_thread_121 where u1='");
+		builder.append(fromUser).append(toUser);
+		
+		for (Row row : session.execute(cqlStatement)) {
+			System.out.println(row.toString());
+			messageThread.add(row.toString());
+		}
+		return messageThread;
+	}
+
+	public boolean save(MessageThread121 chatMessage) {
+		Cluster cluster = Cluster.builder().addContactPoints(serverIp).withPort(9042).build();
+
+		Session session = cluster.connect(keyspace);
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("insert into message_thread_121 values('").append(chatMessage.getU1()).append("'")
+				.append(chatMessage.getU2()).append(",'").append(chatMessage.getBody()).append("','")
+				.append(chatMessage.getFromUser()).append("','").append(System.currentTimeMillis()).append("'");
+		System.out.println(builder.toString());
+		session.execute("insert into");
+
+		return true;
+	}
+
+}

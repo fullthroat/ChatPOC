@@ -1,0 +1,40 @@
+package com.corundumstudio.socketio.demo;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.corundumstudio.socketio.SocketIOClient;
+
+public class ClientDocker {
+
+	private static final Map<Thread, Map> mapStore = new ConcurrentHashMap<Thread, Map>();
+	private static final Map<Map, Thread> threadStore = new ConcurrentHashMap<Map, Thread>();
+	private static final Map<String, SocketIOClient> clientMap = new ConcurrentHashMap<String, SocketIOClient>();
+
+	public static Map<String, SocketIOClient> getClientmap() {
+		return clientMap;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<String, SocketIOClient> initializeMapForThread(Thread thread) {
+		if (!mapStore.containsKey(thread)) {
+			Map<String, SocketIOClient> threadMap = new HashMap<String, SocketIOClient>();
+			mapStore.put(thread, threadMap);
+			return threadMap;
+		}
+		else{
+			return mapStore.get(thread);
+			
+		}
+	}
+	
+	public static Map<String, SocketIOClient> getMapForThread(Thread thread){
+		return mapStore.get(thread);
+	}
+
+	public static Thread getThreadforMap(Map map){
+		return threadStore.get(map);
+	}
+	
+}

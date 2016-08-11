@@ -1,0 +1,15 @@
+package com.lollibond.chat.data;
+
+import java.util.Date;
+import java.util.List;
+
+public class NotificationCodec {
+
+	List<String> actorsUidList;
+	String action;
+	Object on;
+	Object where;
+	Date when;
+	
+	
+}

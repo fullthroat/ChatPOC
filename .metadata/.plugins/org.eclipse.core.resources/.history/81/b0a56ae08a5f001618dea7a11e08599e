@@ -1,0 +1,28 @@
+package com.lollibond.chat.data;
+
+import java.util.List;
+
+public class CreateGroup {
+
+	String tid;
+	String name;
+	List<String> participantsUids;
+	List<String> adminUids;
+	
+	public String getTid() {
+		return tid;
+	}
+	public void setTid(String tid) {
+		this.tid = tid;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
+	
+	
+}

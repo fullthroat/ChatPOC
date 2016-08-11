@@ -1,0 +1,39 @@
+package com.lollibond.chat;
+
+import static org.junit.Assert.*;
+
+import java.util.UUID;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.lollibond.chat.repo.CacheRepository;
+import com.lollibond.chat.server.PigeonApplication;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = PigeonApplication.class)
+public class PigeonApplicationTests {
+
+	@Test
+	public void verifyAuthentication() {
+
+		String sampleuid = "1234";
+		String token = UUID.randomUUID().toString();
+		testOTP(token, sampleuid);
+		verifyAuthentication(token, sampleuid);
+	}
+	
+	@Test
+	public void testOTP(String token, String uid){
+		CacheRepository.getInstance().save(token, uid, 30);
+	}
+
+	@Test
+	public void verifyAuthentication(String token, String uid) {
+
+		assertTrue(CacheRepository.getInstance().verifyToken(token, uid));
+	}
+
+}

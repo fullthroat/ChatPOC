@@ -1,0 +1,11 @@
+package com.lollibond.chat.repo;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.lollibond.chat.domain.MessageThread121;
+
+public interface MessageThreadRepository extends CrudRepository<MessageThread121,String>{
+
+	
+	
+}

@@ -1,0 +1,18 @@
+1468734253862	Rename field 'notificationMessage'
+1468734264232	Rename field 'notificationType'
+1468736234641	Rename field 'notificationmessage'
+1468736251570	Rename field 'notificationtype'
+1468736295995	Rename field 'tempnuid'
+1468763633369	Rename type 'ConsumerCaller'
+1468763646508	Rename type 'ProducerCaller'
+1468849731091	Delete element
+1468849733404	Delete element
+1468849735845	Delete element
+1468849739754	Delete element
+1468849744354	Delete element
+1468849747062	Delete element
+1468849749334	Delete element
+1468850224719	Delete element
+1468909824102	Rename type 'KafkaConsumerThread'
+1468910186222	Rename field 'consumer'
+1468925681881	Rename local variable 'props'

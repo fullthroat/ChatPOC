@@ -1,0 +1,41 @@
+package com.lollibond.chat.data;
+
+public class GroupPayload {
+
+	String tid;
+	String name;
+	String participantsUids;
+	String adminUids;
+	String message;
+	String fromuid;
+	boolean delete;
+	boolean lastreadflag;
+	
+	
+	public String getTid() {
+		return tid;
+	}
+	public void setTid(String tid) {
+		this.tid = tid;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getParticipantsUids() {
+		return participantsUids;
+	}
+	public void setParticipantsUids(String participantsUids) {
+		this.participantsUids = participantsUids;
+	}
+	public String getAdminUids() {
+		return adminUids;
+	}
+	public void setAdminUids(String adminUids) {
+		this.adminUids = adminUids;
+	}
+	
+	
+}

@@ -1,0 +1,5 @@
+package com.lollibond.chat.server;
+
+public class PigeonWebServer {
+
+}

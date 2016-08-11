@@ -1,0 +1,13 @@
+package com.lollibond.chat.repo;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
+
+public class MessageThreadsRepository {
+
+	String serverIp = "127.0.0.1";
+	String keyspace = "pigeon";
+	Cluster cluster = Cluster.builder().addContactPoints(serverIp).withPort(9042).build();
+	Session session = cluster.connect(keyspace);
+	
+}

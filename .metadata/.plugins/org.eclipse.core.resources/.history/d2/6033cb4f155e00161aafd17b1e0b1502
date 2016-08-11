@@ -1,0 +1,21 @@
+package com.lollibond.chat.webservice;
+
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.lollibond.chat.repo.MessageThreadRepository;
+
+@RestController
+public class MessageThreadWebservice {
+
+	
+	public String getMessageThreadPaginated(@RequestParam String u1, @RequestParam String u2, @RequestParam String requestedPage){
+		
+		MessageThreadRepository threadRepository=new MessageThreadRepository();
+		
+		threadRepository.findByUIandU2Paginated(u1, u2, requestedPage);
+		
+		return null;
+	}
+	
+}

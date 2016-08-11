@@ -1,0 +1,25 @@
+package com.lollibond.chat.repo;
+
+import java.util.List;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
+import com.lollibond.chat.domain.ChatMessage;
+
+public class MessageThreadsRepository {
+
+	String serverIp = "127.0.0.1";
+	String keyspace = "pigeon";
+	Cluster cluster = Cluster.builder().addContactPoints(serverIp).withPort(9042).build();
+	Session session = cluster.connect(keyspace);
+	
+	public void saveMessage(ChatMessage chatMessage){
+		
+	}
+	
+	public List<ChatMessage> fetchThread(String tid){
+		
+		return null;
+	}
+	
+}

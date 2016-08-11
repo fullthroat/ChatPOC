@@ -1,0 +1,113 @@
+package com.corundumstudio.socketio.demo;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.corundumstudio.socketio.AckRequest;
+import com.corundumstudio.socketio.Configuration;
+import com.corundumstudio.socketio.SocketIOClient;
+import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.listener.ConnectListener;
+import com.corundumstudio.socketio.listener.DataListener;
+import com.corundumstudio.socketio.listener.DisconnectListener;
+import com.lollibond.chat.generic.ChatPayload;
+import com.lollibond.chat.generic.NotificationsPayload;
+import com.lollibond.chat.generic.RegisterPayload;
+
+public class DynamicChatServer {
+
+	// For storing uuid's as client reference
+	private static final Map<String, SocketIOClient> clientMap = new HashMap<String, SocketIOClient>();
+	// For storing usernames as client references
+	private static final Map<String, SocketIOClient> registerMap = new HashMap<String, SocketIOClient>();
+	// For storing the notifications sockets, have to discuss architecture with
+	// Omar, This might be the same as
+	private static final Map<String, SocketIOClient> notificationMap = new HashMap<String, SocketIOClient>();
+
+	public static void main(String args[]) throws InterruptedException {
+
+		try {
+
+			Configuration config = new Configuration();
+			config.setHostname("localhost");
+			config.setPort(5054);
+
+			final SocketIOServer server = new SocketIOServer(config);
+			server.addEventListener("chatevent", ChatPayload.class, new DataListener<ChatPayload>() {
+				@Override
+				public void onData(SocketIOClient client, ChatPayload data, AckRequest ackRequest) {
+					// broadcast messages to all clients
+					server.getBroadcastOperations().sendEvent("chatevent", data);
+					registerMap.put(data.getUserName(), client);
+				}
+			});
+
+			server.addConnectListener(new ConnectListener() {
+				@Override
+				public void onConnect(SocketIOClient client) {
+					clientMap.put(client.getSessionId().toString(), client);
+
+				}
+			});
+
+			server.addDisconnectListener(new DisconnectListener() {
+				@Override
+				public void onDisconnect(SocketIOClient client) {
+					clientMap.remove(client.getSessionId().toString());
+				}
+			});
+
+			server.addEventListener("sendmsgtouser", ChatPayload.class, new DataListener<ChatPayload>() {
+				@Override
+				public void onData(SocketIOClient client, ChatPayload data, AckRequest ackRequest) {
+					SocketIOClient toUser = registerMap.get(data.getToUser());
+					SocketIOClient notificationClient=notificationMap.get("notification786");
+					NotificationsPayload notification=new NotificationsPayload();
+					notification.setTouid(data.getToUser());
+					notification.setNotificationmessage("You have an unread Message");
+					notification.setNotificationtype("simple message");
+					if (toUser != null) {
+						toUser.sendEvent("sendmsgtouser", data);
+						notificationClient.sendEvent("notification", notification);
+					}
+
+				}
+			});
+
+			server.addEventListener("register", RegisterPayload.class, new DataListener<RegisterPayload>() {
+				@Override
+				public void onData(SocketIOClient client, RegisterPayload data, AckRequest ackRequest) {
+					if(data.getUsername().contains("notification")){
+						notificationMap.put(data.getUsername(), client);
+						return;
+					}
+					if (!registerMap.containsKey(data.getUsername())){
+						registerMap.put(data.getUsername(), client);
+					}
+
+				}
+			});
+
+			/*server.addEventListener("notification", NotificationsPayload.class, new DataListener<NotificationsPayload>() {
+				@Override
+				public void onData(SocketIOClient client, NotificationsPayload data, AckRequest ackRequest) {
+					SocketIOClient toUser = notificationMap.get(data.getTempnuid());
+					if (toUser != null) {
+						toUser.sendEvent("notification", data);
+
+					}
+				}
+			});*/
+
+			server.start();
+
+			Thread.sleep(Integer.MAX_VALUE);
+
+			server.stop();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+}

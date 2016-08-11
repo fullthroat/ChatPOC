@@ -1,0 +1,51 @@
+package com.bondinco.socketload;
+
+import org.json.JSONObject;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+
+public class Launcher {
+	
+	public static void main(String args[]){
+
+		System.out.println("Started Client number"+ 214);
+		JSONObject obj = new JSONObject();
+		obj.put("username", "214");
+		obj.put("sesionid", "214");
+		obj.put("initialmessage", "I am " + 214);
+/*			IO.Options opts = new IO.Options();
+		opts.forceNew = true;
+		opts.reconnection = false;*/
+		try{
+		Socket socket = IO.socket("http://localhost:2852");
+		socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+
+			@Override
+			public void call(Object... args) {
+				socket.emit("register", obj);
+			}
+
+		}).on("event", new Emitter.Listener() {
+
+			@Override
+			public void call(Object... args) {
+			}
+
+		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+
+			@Override
+			public void call(Object... args) {
+			}
+
+		});
+		socket.connect();
+	
+}
+	catch(Exception e){
+		e.printStackTrace();
+	}
+}
+
+}

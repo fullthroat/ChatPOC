@@ -1,0 +1,6 @@
+package com.lollibond.chat.launch;
+
+@SpringBootApplication
+public class Launcher {
+
+}

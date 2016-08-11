@@ -1,0 +1,36 @@
+package com.cassandraexp.main;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+
+@SpringBootApplication
+public class CassandraContactApplication implements CommandLineRunner {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CassandraContactApplication.class, args);
+
+		String serverIp = "166.78.10.41";
+	    String keyspace = "gamma";
+	    Cluster cluster = Cluster.builder()
+	            .addContactPoints(serverIp)
+	            .build();
+
+	    Session session = cluster.connect(keyspace);
+
+
+	    String cqlStatement = "SELECT * FROM TestCF";
+	    for (Row row : session.execute(cqlStatement)) {
+	        System.out.println(row.toString());
+	    }
+		
+	}
+	
+
+	
+		
+}

@@ -1,0 +1,16 @@
+package com.lollibond.chat.webservice;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.lollibond.chat.service.ThreadService;
+
+@RestController
+public class ChatThreadService {
+
+	@Autowired
+	private ThreadService threadService;
+	
+ 
+	
+}

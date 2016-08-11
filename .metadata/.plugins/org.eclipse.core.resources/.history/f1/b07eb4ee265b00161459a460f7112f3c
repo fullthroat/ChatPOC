@@ -1,0 +1,58 @@
+package com.lollibond.chat.domain;
+
+import java.util.Date;
+
+import org.springframework.cassandra.core.Ordering;
+import org.springframework.cassandra.core.PrimaryKeyType;
+import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.mapping.Table;
+
+@Table(value = "message_thread_121")
+public class MessageThread121 {
+
+	@PrimaryKeyColumn(name = "u1", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
+	private String u1;
+	@PrimaryKeyColumn(name = "u2", ordinal = 1, type = PrimaryKeyType.PARTITIONED)
+	private String u2;
+
+	@PrimaryKeyColumn(name = "time", ordinal = 2, type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
+	private Date time;
+	private String body;
+	private String fromUser;
+	/*
+	 * @PrimaryKey private ThreadId threadId;
+	 */
+
+	public MessageThread121() {
+
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public ThreadId getThreadId() {
+		return threadId;
+	}
+
+	public void setThreadId(ThreadId threadId) {
+		this.threadId = threadId;
+	}
+
+	public String getFromUser() {
+		return fromUser;
+	}
+
+	public void setFromUser(String fromUser) {
+		this.fromUser = fromUser;
+	}
+
+	
+	
+	
+}

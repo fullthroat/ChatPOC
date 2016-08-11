@@ -1,0 +1,13 @@
+1469527097942	Move compilation unit
+1469531057039	Move compilation unit
+1469534163697	Rename type 'Authenticate'
+1469610804852	Rename field 'clMap'
+1469694046024	Rename type 'MessageHistory121'
+1469695236753	Rename field 'message_id'
+1469695247384	Rename field 'from_user'
+1469695261025	Rename field 'to_user'
+1469709855756	Rename field 'username'
+1469709873134	Rename method 'getUsername'
+1469709879381	Rename method 'setUsername'
+1469709895699	Rename local variable 'username'
+1469709967244	Rename local variable 'userName'

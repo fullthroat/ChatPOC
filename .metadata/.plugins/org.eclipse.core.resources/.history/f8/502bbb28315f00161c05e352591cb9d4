@@ -1,0 +1,33 @@
+package com.lollibond.chat.service;
+
+import java.util.List;
+
+import com.lollibond.chat.domain.MessageThread;
+import com.lollibond.chat.domain.ThreadDetail;
+import com.lollibond.chat.domain.ThreadList;
+
+public class GroupChatService {
+
+	public String createGroup(String groupName) {
+		
+		return "";
+	}
+
+	public List<ThreadList> getRecentGroupChats() {
+		return null;
+	}
+
+	public List<MessageThread> appendChatMessageToGroupThread(MessageThread thread) {
+		return null;
+	}
+	
+	public List<ThreadDetail> addParticipantToGroup(String uid, String tid){
+		return null;
+	}
+	
+	public List<ThreadDetail> deleteThread(String uid, String tid){
+		
+	}
+		
+
+}

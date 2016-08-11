@@ -1,0 +1,14 @@
+package com.lollibond.chat.domain;
+
+import java.util.Date;
+
+public class ThreadList {
+
+	String uid;
+	String tid;
+	Date lastread_time;
+	Date firstmsg_time;
+	boolean hidden;
+	Date hidefrom_time;
+	
+}

@@ -1,0 +1,71 @@
+package com.lollibond.chat.domain;
+
+import java.util.Date;
+
+import org.springframework.data.cassandra.mapping.CassandraType;
+import org.springframework.data.cassandra.mapping.Column;
+import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.data.cassandra.mapping.Table;
+
+import com.datastax.driver.core.DataType.Name;
+
+@Table(value = "message_thread_121")
+public class MessageThread121 {
+
+	
+	
+	
+	@PrimaryKey
+	private ThreadId threadId;
+	
+	@Column("body")
+	@CassandraType(type=Name.VARCHAR)
+	private String body;
+	@Column("fromuser")
+	@CassandraType(type=Name.VARCHAR)
+	private String fromUser;
+	/*
+	 * @PrimaryKey private ThreadId threadId;
+	 */
+
+	public MessageThread121() {
+
+	}
+	
+/*	public ThreadId getThreadId() {
+		return threadId;
+	}
+
+
+
+	public void setThreadId(ThreadId threadId) {
+		this.threadId = threadId;
+	}*/
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public String getFromUser() {
+		return fromUser;
+	}
+
+	public void setFromUser(String fromUser) {
+		this.fromUser = fromUser;
+	}
+
+	public ThreadId getThreadId() {
+		return threadId;
+	}
+
+	public void setThreadId(ThreadId threadId) {
+		this.threadId = threadId;
+	}
+	
+	
+
+}

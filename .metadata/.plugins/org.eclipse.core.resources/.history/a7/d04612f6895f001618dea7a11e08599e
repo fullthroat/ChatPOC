@@ -1,0 +1,287 @@
+package com.lollibond.chat.server;
+
+import java.util.Date;
+import java.util.Map;
+import java.util.Properties;
+
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.json.simple.JSONObject;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+import com.corundumstudio.socketio.AckRequest;
+import com.corundumstudio.socketio.AuthorizationListener;
+import com.corundumstudio.socketio.Configuration;
+import com.corundumstudio.socketio.HandshakeData;
+import com.corundumstudio.socketio.SocketIOClient;
+import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.listener.ConnectListener;
+import com.corundumstudio.socketio.listener.DataListener;
+import com.corundumstudio.socketio.listener.DisconnectListener;
+import com.google.gson.Gson;
+import com.lollibond.chat.data.Message;
+import com.lollibond.chat.data.NotificationsPayload;
+import com.lollibond.chat.data.RegisterPayload;
+import com.lollibond.chat.data.ThreadParam;
+import com.lollibond.chat.domain.ChatMessage;
+import com.lollibond.chat.repo.RedisRepository;
+import com.lollibond.chat.repo.MessageThreadRepository;
+import com.lollibond.chat.serverutil.ClientDocker;
+import com.lollibond.chat.serverutil.ConsumerWorker;
+
+@SpringBootApplication
+@EnableAutoConfiguration
+/* @EnableCassandraRepositories(basePackages = { "com.lollibond.chat.repo" }) */
+@ComponentScan("com.lollibond.chat")
+public class PigeonApplication implements CommandLineRunner {
+
+	private static KafkaProducer<String, String> kafkaProducer;
+	private static Map<String, SocketIOClient> clientMap = ClientDocker.getClientmap();
+	private static Map<SocketIOClient, String> userNameMap = ClientDocker.getUsernamemap();
+
+	/*
+	 * @Kaunain - Used during benchmark - Please do not remove private static
+	 * int count = 0;
+	 */
+
+	/* @Value("${com.lollibond.pigeon.host}") */
+	private String hostName = "172.16.18.84";
+
+	/* @Value("${com.lollibond.pigeon.port}") */
+	private int portNumber = 5054;
+
+	@Override
+	public void run(String... args) throws Exception {
+
+		try {
+			final int numberOfThreads = 4;
+			Properties producerProperties = new Properties();
+			producerProperties.put("bootstrap.servers", "localhost:9092");
+			producerProperties.put("acks", "all");
+			producerProperties.put("retries", "0");
+			producerProperties.put("batch.size", 16384);
+			producerProperties.put("linger.ms", 0);
+			producerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+			producerProperties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+			kafkaProducer = new KafkaProducer<String, String>(producerProperties);
+
+			//
+			Configuration config = new Configuration();
+			config.setHostname(hostName);
+			config.setPort(portNumber);
+			config.setAuthorizationListener(new AuthorizationListener() {
+				public boolean isAuthorized(HandshakeData data) {
+
+					return RedisRepository.getInstance().verifyToken(data.getSingleUrlParam("token"),
+							data.getSingleUrlParam("uid"));
+				}
+			});
+
+			final SocketIOServer server = new SocketIOServer(config);
+
+			final ConsumerWorker consumerWorker[] = new ConsumerWorker[4];
+			for (int i = 0; i < numberOfThreads; i++) {
+				consumerWorker[i] = new ConsumerWorker();
+				consumerWorker[i].start();
+			}
+
+			/*
+			 * @Kaunain - Please do not remove this code
+			 * server.addEventListener("chatevent", ChatPayload.class, new
+			 * DataListener<ChatPayload>() {
+			 * 
+			 * @Override public void onData(SocketIOClient client, ChatPayload
+			 * data, AckRequest ackRequest) { // broadcast messages to all
+			 * clients server.getBroadcastOperations().sendEvent("chatevent",
+			 * data); registerMap.put(data.getUserName(), client); } });
+			 */
+
+			server.addEventListener("register", RegisterPayload.class, new DataListener<RegisterPayload>() {
+				@Override
+				public void onData(SocketIOClient client, RegisterPayload data, AckRequest ackRequest) {
+					System.out.println("Connection Request Revieved");
+					/* countConnections(); */
+					long userId = Long.parseLong(data.getUserId());
+					int threadId = (int) (userId % consumerWorker.length);
+					clientMap.put(data.getUserId(), client);
+					userNameMap.put(client, data.getUserId());
+					consumerWorker[threadId].getAssignedMap().put(data.getUserId(), client);
+					consumerWorker[threadId].getShouldSubscribe().set(true);
+				}
+			});
+
+			/*
+			 * server.addEventListener("authenticate", RegisterPayload.class,
+			 * new DataListener<RegisterPayload>() {
+			 * 
+			 * @Override public void onData(SocketIOClient client,
+			 * RegisterPayload data, AckRequest ackRequest) { if
+			 * (data.getUserId().contains("notification")) {
+			 * clientMap.put(data.getUserId(), client); return; }
+			 * clientMap.put(data.getUserId(), client);
+			 * 
+			 * }
+			 * 
+			 * });
+			 */
+
+			server.addConnectListener(new ConnectListener() {
+				@Override
+				public void onConnect(SocketIOClient client) {
+					System.out.println("New Client Connected");
+				}
+			});
+
+			server.addEventListener("loadthreadhistory", ThreadParam.class, new DataListener<ThreadParam>() {
+				@Override
+				public void onData(SocketIOClient client, ThreadParam data, AckRequest ackRequest) {
+					if (data != null) {
+						MessageThreadRepository messageThreadRepository = new MessageThreadRepository();
+						Message message = new Message();
+						message.setTopic(userNameMap.get(client));
+						/*
+						 * ThreadId threadId=new ThreadId();
+						 * threadId.setU1(data.getU1());
+						 * threadId.setU2(data.getU2());
+						 */
+						message.setMessage(new Gson()
+								.toJson(messageThreadRepository.findByU1AndU2(userNameMap.get(client), data.getU2())));
+						/*
+						 * List<MessageThread121>
+						 * l=messageThreadRepository.findByThreadId(threadId);
+						 */
+						/* message.setMessage(new Gson().toJson(l)); */
+
+						client.sendEvent("loadthreadhistory", message);
+						/*
+						 * client.sendEvent("loadthreadhistory", new
+						 * Gson().toJson(pullThread(data.getFromUser(),
+						 * data.getToUser(), data.getPageNumber(),
+						 * data.getPageSize())));
+						 */
+					}
+				}
+			});
+
+			server.addDisconnectListener(new DisconnectListener() {
+				@Override
+				public void onDisconnect(SocketIOClient client) {
+					clientMap.remove(userNameMap.get(client));
+					userNameMap.remove(client);
+				}
+			});
+
+			server.addEventListener("notification", NotificationsPayload.class,
+					new DataListener<NotificationsPayload>() {
+						@SuppressWarnings("unchecked")
+						@Override
+						public void onData(SocketIOClient client, NotificationsPayload data, AckRequest ackRequest) {
+							MessageThreadRepository messageThreadRepository = new MessageThreadRepository();
+							JSONObject json = new JSONObject();
+							json.put("notification_type", data.getType());
+							json.put("notification_message", data.getMessage());
+							ChatMessage chatMessage = new ChatMessage();
+							chatMessage.setBody(data.getMessage());
+							String fromUser = userNameMap.get(client);
+							String toUser = data.getTouid();
+							if (fromUser != null && toUser != null) {
+								long user = Long.parseLong(fromUser);
+								long user2 = Long.parseLong(toUser);
+								if (user > user2) {
+									chatMessage.setU1(data.getTouid());
+									chatMessage.setU2(fromUser);
+									chatMessage.setTime(new Date());
+									/* chatMessage.setThreadId(threadId); */
+								} else {
+									chatMessage.setU1(fromUser);
+									chatMessage.setU2(toUser);
+									chatMessage.setTime(new Date());
+									/* chatMessage.setThreadId(threadId); */
+								}
+							}
+							chatMessage.setFromUser(fromUser);
+							try {
+								messageThreadRepository.save(chatMessage);
+								ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>(
+										data.getTouid(), json.toJSONString());
+								kafkaProducer.send(producerRecord);
+								/* kafkaProducer.close(); */
+
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							/*
+							 * saveMessage(clientMap.get(client).toString(),
+							 * data.getTouid(), data.getMessage());
+							 */
+
+						}
+					});
+			
+			server.addEventListener("notification", NotificationsPayload.class,
+					new DataListener<NotificationsPayload>(){
+				@SuppressWarnings("unchecked")
+				@Override
+				public void onData(SocketIOClient client, NotificationsPayload data, AckRequest ackRequest) {
+				
+					
+				}
+			});
+
+			server.start();
+
+			while (true) {
+				// This loop should not be removed
+			}
+
+		}catch(
+
+	Exception e)
+	{
+		e.printStackTrace();
+	}
+	}
+
+	/*
+	 * private boolean saveMessage(String fromUser, String toUser, String
+	 * message) { boolean bool = threadService.saveMessageToThread(message,
+	 * fromUser, toUser); return bool; }
+	 */
+
+	/*
+	 * private List<MessageThread121> pullThread(String fromUser, String toUser,
+	 * int pageNumber, int pageSize) { List<MessageThread121> list =
+	 * threadService.pullThread(fromUser, toUser, new PageRequest(pageNumber,
+	 * pageSize)); return list; }
+	 */
+
+	public static void main(String args[]) {
+		SpringApplication.run(PigeonApplication.class, args);
+	}
+
+	/*
+	 * private static void countConnections() { DynamicChatServer.count++;
+	 * 
+	 * if (count % 100000 == 0) { System.out.println(
+	 * "Connection Count is now ....." + count); } }
+	 */
+
+	/*
+	 * @Kaunain - Please leave this code during review. Its a reminder set
+	 * public static Map<String, SocketIOClient> getLeastLoadMap() {
+	 * 
+	 * Map<ConsumerWorker, Map> map = ClientDocker.getMapstore(); Map<Integer,
+	 * Map> idMap = new HashMap<Integer, Map>(); int lengthArray[];
+	 * Iterator<Map> iter = map.values().iterator(); while (iter.hasNext()) {
+	 * Map mp = iter.next(); idMap.put(mp.size(), mp); } idMap.keySet();
+	 * 
+	 * 
+	 * return null; }
+	 */
+
+}

@@ -1,0 +1,38 @@
+package com.lollibond.chat.repo;
+
+import com.lambdaworks.redis.RedisClient;
+import com.lambdaworks.redis.SetArgs;
+import com.lambdaworks.redis.api.StatefulRedisConnection;
+
+public class CacheRepository {
+
+	private static final RedisClient client = RedisClient.create("redis://localhost");
+	private static final StatefulRedisConnection<String, String> connection = client.connect();
+
+	/*
+	 * public CacheRepository() { connection = client.connect(); }
+	 */
+
+	public static void save(String key, String value) {
+		connection.sync().set(key, value);
+	}
+
+	public void save(String key, String value, long time) {
+		connection.sync().set(key, value, SetArgs.Builder.ex(time));
+	}
+
+	public boolean verifyToken(String key, String userId) {
+		if (connection.sync().get(key).matches(userId)) {
+			connection.sync().del(key);
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	public String retrieve(String key) {
+		return connection.sync().get(key);
+	}
+
+}

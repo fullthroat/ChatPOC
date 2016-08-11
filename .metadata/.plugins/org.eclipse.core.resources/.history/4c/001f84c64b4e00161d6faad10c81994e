@@ -1,0 +1,75 @@
+package com.corundumstudio.socketio.demo;
+
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+
+import com.corundumstudio.socketio.SocketIOClient;
+
+public class ConsumerWorker implements Runnable {
+
+	Properties consumerProperties;
+	private KafkaConsumer<String, String> consumer;
+	private final AtomicBoolean shouldSubscribe = new AtomicBoolean(true);
+
+	public AtomicBoolean getShouldSubscribe() {
+		return shouldSubscribe;
+	}
+
+	public ConsumerWorker() {
+		consumerProperties = new Properties();
+		consumerProperties.put("bootstrap.servers", "localhost:9092");
+		consumerProperties.put("group.id", "wunabalu");
+		consumerProperties.put("enable.auto.commit", true);
+		consumerProperties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+		consumerProperties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+		consumerProperties.put("auto.commit.interval.ms", 1000);
+		consumerProperties.put("session.timeout.ms", 30000);
+/*		consumerProperties = new Properties();
+		consumerProperties.put("bootstrap.servers", "localhost:9092");
+		consumerProperties.put("acks", "all");
+        consumerProperties.put("retries", 0);
+        consumerProperties.put("batch.size", 16384);
+        consumerProperties.put("linger.ms", 0);
+        consumerProperties.put("buffer.memory", 33554432);
+        consumerProperties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        consumerProperties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        consumerProperties.put("block.on.buffer.full",true);
+        consumerProperties.put("group.id", "dubashesh");*/
+		consumer = new KafkaConsumer<>(consumerProperties);
+	}
+
+	@Override
+	public void run() {
+		System.out.println("Kafka Consumer Started .......... Listening to topics");
+		Set<String> topicIds = ClientDocker.getClientmap().keySet();
+		Map<String, SocketIOClient> clientMap = ClientDocker.getClientmap();
+
+		while (true) {
+			if (shouldSubscribe.get()) {
+				shouldSubscribe.set(false);
+				consumer.subscribe(topicIds);
+			}
+			ConsumerRecords<String, String> records = consumer.poll(1000);
+			if (!records.isEmpty()) {
+				if (clientMap != null && !clientMap.isEmpty()) {
+					for (ConsumerRecord<String, String> record : records) {
+						System.out.println(record.topic());
+						System.out.println(record.value());
+						Message msg=new Message();
+						msg.setTopic(record.topic());
+						msg.setMessage(record.value());
+						clientMap.get(record.topic()).sendEvent("sendmsgtouser", msg);
+					}
+				}
+			}
+
+		}
+
+	}
+}

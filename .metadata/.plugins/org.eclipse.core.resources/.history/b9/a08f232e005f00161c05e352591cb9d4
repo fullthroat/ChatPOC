@@ -1,0 +1,55 @@
+package com.lollibond.chat.repo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.lollibond.chat.domain.ChatMessage;
+import com.lollibond.chat.domain.MessageThread;
+
+public class MessageThreadsRepository {
+
+	String serverIp = "127.0.0.1";
+	String keyspace = "pigeon";
+	Cluster cluster = Cluster.builder().addContactPoints(serverIp).withPort(9042).build();
+	Session session = cluster.connect(keyspace);
+
+	public void saveMessage(MessageThread chatMessage) {
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("insert into message_threads (tid,ts,msg,attachement,fromuid) values('")
+				.append(chatMessage.getTid()).append("','").append(chatMessage.getTs()).append("',")
+				.append(chatMessage.getMsg()).append(",'").append(chatMessage.getAttachement()).append("','")
+				.append(chatMessage.getFromuid()).append("');");
+		session.execute(builder.toString());
+		System.out.println(builder.toString());
+
+		cluster.close();
+		session.close();
+	}
+
+	public List<MessageThread> fetchThread(String tid) {
+
+		List<MessageThread> thread=new ArrayList<MessageThread>();
+		List<String> messageThread = new ArrayList<String>();
+		StringBuilder builder = new StringBuilder("Select * from message_threads where tid='");
+		builder.append(tid).append("'");
+
+		for (Row row : session.execute(builder.toString())) {
+			MessageThread message=new MessageThread();
+			System.out.println(row.toString());
+			message.setTid(row.getString("tid"));
+			message.setAttachement(row.getString("attachement"));
+			message.setFromuid(row.getString("fromuid"));
+			message.setMsg(row.getString("msg"));
+			message.setTs(row.getDate("ts"));
+			messageThread.add(row.toString());
+		}
+		cluster.close();
+		session.close();
+		return messageThread;
+	}
+
+}

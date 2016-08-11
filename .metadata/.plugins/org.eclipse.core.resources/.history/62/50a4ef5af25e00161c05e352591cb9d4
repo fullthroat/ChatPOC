@@ -1,0 +1,96 @@
+package com.lollibond.chat.domain;
+
+import java.io.Serializable;
+
+/*import org.springframework.cassandra.core.Ordering;
+import org.springframework.cassandra.core.PrimaryKeyType;
+import org.springframework.data.cassandra.mapping.CassandraType;
+import org.springframework.data.cassandra.mapping.PrimaryKeyClass;
+import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
+
+import com.datastax.driver.core.DataType.Name;*/
+
+/*@PrimaryKeyClass*/
+public class ThreadId implements Serializable {
+
+	/**
+	 * 
+	 */
+	/*private static final long serialVersionUID = 1L;
+
+	@PrimaryKeyColumn(name = "u1", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
+	@CassandraType(type=Name.VARCHAR)
+	private String u1;
+	
+	@PrimaryKeyColumn(name = "u2", ordinal = 1, type = PrimaryKeyType.PARTITIONED)
+	@CassandraType(type=Name.VARCHAR)
+	private String u2;
+
+	@PrimaryKeyColumn(name = "time", ordinal = 2, type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
+	@CassandraType(type=Name.TIMESTAMP)
+	private Date time;
+
+	public String getU1() {
+		return u1;
+	}
+
+	public void setU1(String u1) {
+		this.u1 = u1;
+	}
+
+	public String getU2() {
+		return u2;
+	}
+
+	public void setU2(String u2) {
+		this.u2 = u2;
+	}
+
+	public Date getTime() {
+		return time;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((time == null) ? 0 : time.hashCode());
+		result = prime * result + ((u1 == null) ? 0 : u1.hashCode());
+		result = prime * result + ((u2 == null) ? 0 : u2.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ThreadId other = (ThreadId) obj;
+		if (time == null) {
+			if (other.time != null)
+				return false;
+		} else if (!time.equals(other.time))
+			return false;
+		if (u1 == null) {
+			if (other.u1 != null)
+				return false;
+		} else if (!u1.equals(other.u1))
+			return false;
+		if (u2 == null) {
+			if (other.u2 != null)
+				return false;
+		} else if (!u2.equals(other.u2))
+			return false;
+		return true;
+	}
+*/
+
+
+}

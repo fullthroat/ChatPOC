@@ -1,0 +1,44 @@
+package com.lollibond.chat.domain;
+
+import java.util.List;
+
+public class ThreadDetail {
+
+	String tid;
+	String participants_list;
+	String name;
+	String admins_list;
+	
+	public String getTid() {
+		return tid;
+	}
+	public void setTid(String tid) {
+		this.tid = tid;
+	}
+	public String getParticipants_list() {
+		return participants_list;
+	}
+	
+	public void setParticipantsList(List<String> participantList){
+		setParticipants_list(participantList.toString());
+	}
+	
+	public void setParticipants_list(String participants_list) {
+		this.participants_list = participants_list;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getAdmins_list() {
+		return admins_list;
+	}
+	public void setAdmins_list(String admins_list) {
+		this.admins_list = admins_list;
+	}
+	
+	
+	
+}

@@ -1,0 +1,10 @@
+package com.lollibond.chat.domain;
+
+import java.io.Serializable;
+
+import org.springframework.data.cassandra.mapping.PrimaryKeyClass;
+
+@PrimaryKeyClass
+public class ThreadId implements Serializable {
+
+}

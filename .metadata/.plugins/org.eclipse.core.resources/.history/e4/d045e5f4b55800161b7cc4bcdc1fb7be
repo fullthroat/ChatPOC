@@ -1,0 +1,52 @@
+package com.lollibond.chat.service.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.lollibond.chat.domain.MessageThread121;
+import com.lollibond.chat.repo.MessageThreadRepository;
+import com.lollibond.chat.service.ThreadService;
+
+@Service
+public class ThreadServiceImpl implements ThreadService {
+
+	@Autowired
+	private MessageThreadRepository messageThreadRepository;
+
+	public boolean saveMessageToThread(String message, String u1, String u2) {
+
+		MessageThread121 chatMessage = new MessageThread121();
+		chatMessage.setBody(message);
+		if (u1 != null && u2 != null) {
+			long user = Long.parseLong(u1);
+			long user2 = Long.parseLong(u2);
+			if (user > user2) {
+				chatMessage.setU1(u2);
+				chatMessage.setU2(u1);
+
+			} else {
+				chatMessage.setU1(u1);
+				chatMessage.setU2(u2);
+			}
+		}
+		chatMessage.setFromUser(u1);
+
+		chatMessage.setTime(new Date());
+		try {
+			messageThreadRepository.save(chatMessage);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public List<MessageThread121> pullThread(String fromUser, String toUser, Pageable pageable) {
+		return messageThreadRepository.findByFromUserAndFromUser(fromUser, toUser, pageable);
+	}
+
+}

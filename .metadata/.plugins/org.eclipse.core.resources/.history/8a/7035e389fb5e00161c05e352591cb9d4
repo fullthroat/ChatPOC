@@ -1,0 +1,12 @@
+package com.lollibond.chat.domain;
+
+public class ThreadDetail {
+
+	String tid;
+	String participants_list;
+	String name;
+	String admins_list;
+	
+	
+	
+}

@@ -1,0 +1,13 @@
+package com.lollibond.chat.domain;
+
+import java.util.Date;
+
+public class MessageThread121 {
+
+	private String u1;
+	private String u2;
+	private String body;
+	private String fromUser;
+	private Date time;
+	
+}

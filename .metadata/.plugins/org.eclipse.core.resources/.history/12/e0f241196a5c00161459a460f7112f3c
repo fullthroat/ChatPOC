@@ -1,0 +1,39 @@
+package com.lollibond.chat.domain;
+
+import java.util.Date;
+
+import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.data.cassandra.mapping.Table;
+
+@Table(value = "message_thread_121")
+public class MessageThread121 {
+
+	@PrimaryKey
+	private ThreadId threadId;
+	private String body;
+	private String fromUser;
+	/*
+	 * @PrimaryKey private ThreadId threadId;
+	 */
+
+	public MessageThread121() {
+
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public String getFromUser() {
+		return fromUser;
+	}
+
+	public void setFromUser(String fromUser) {
+		this.fromUser = fromUser;
+	}
+
+}

@@ -1,0 +1,26 @@
+package com.lollibond.chat.repo;
+
+import java.util.List;
+
+/*import org.springframework.data.cassandra.repository.Query;
+import org.springframework.data.repository.CrudRepository;*/
+import org.springframework.stereotype.Repository;
+
+import com.lollibond.chat.domain.ChatMessage;
+
+@Repository
+public interface MessageThreadRepository_Old{
+
+/*	List<MessageThread121> findByFromUserAndToUser(String fromuser, String touser);
+
+	List<MessageThread121> findByFromUserAndToUser(String fromuser, String touser, Pageable pageAble);*/
+	
+/*	@Query("Select * from message_thread_121 where u1=?0 and u2=?1")*/
+	List<ChatMessage> findByU1AndU2(String u1, String u2);
+	
+	/*@Query("Select * from Message")
+	List<MessageThread121> findByThreadId();*/
+	
+	/*List<MessageThread121> findByThreadId(ThreadId threadId);*/
+
+}

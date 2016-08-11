@@ -1,0 +1,5 @@
+package com.lollibond.chat.service;
+
+public interface ThreadService{
+
+}

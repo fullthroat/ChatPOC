@@ -1,0 +1,58 @@
+package com.lollibond.chat.broker;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.apache.http.HttpHeaders;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lollibond.chat.domain.Message;
+
+public class ConsumerWorker {
+
+	public static Message subscribeMessage(String userId) {
+		Message message = new Message();
+		try {
+
+			CloseableHttpClient client = HttpClients.createDefault();
+			HttpPost post = new HttpPost("http://localhost:8080/company/publish");
+			post.setHeader(HttpHeaders.CONTENT_TYPE, ContentType.TEXT_PLAIN.toString());
+			StringEntity input = new StringEntity(userId);
+			post.setEntity(input);
+
+			CloseableHttpResponse response = client.execute(post);
+			response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+			BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				System.out.println(line);
+				message.setMessage(line);
+				message.setTopic(userId);
+			}
+
+			if (response.getStatusLine().getStatusCode() != 200) {
+				System.out.println(response.getStatusLine().getStatusCode());
+			}
+			client.close();
+			response.close();
+			return message;
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return message;
+		}
+
+	}
+
+}

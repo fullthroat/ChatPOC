@@ -1,0 +1,10 @@
+package com.lollibond.chat.domain;
+
+
+/*@Table(value="chat_messages_121")*/
+public class MessageHistory121 {
+
+	
+	
+	
+}

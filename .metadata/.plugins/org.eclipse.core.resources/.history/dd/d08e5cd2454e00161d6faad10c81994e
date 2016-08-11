@@ -1,0 +1,89 @@
+package launcher;
+
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+
+/**
+ * @author Kaunain Wajeeh
+ */
+
+
+public class ConsumerListener extends Thread {
+
+	private String clientId;
+	private String topic;
+	private KafkaConsumer<String, String> consumer;
+	private final AtomicBoolean closed = new AtomicBoolean(false);
+	
+	public static void main(String args[]){
+		ConsumerListener listener=new ConsumerListener();
+		listener.start();
+	}
+
+	public ConsumerListener() {
+		
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+
+	public String getTopic() {
+		return topic;
+	}
+
+	public void setTopic(String topic) {
+		this.topic = topic;
+	}
+
+	/*
+	 * private static void printMessages(ByteBufferMessageSet messageSet) throws
+	 * UnsupportedEncodingException { for (MessageAndOffset messageAndOffset :
+	 * messageSet) { ByteBuffer payload = messageAndOffset.message().payload();
+	 * byte[] bytes = new byte[payload.limit()]; payload.get(bytes);
+	 * System.out.println(new String(bytes, "UTF-8")); } }
+	 */
+
+	@Override
+	public void run(){
+		
+		Properties properties = new Properties();
+		properties.put("bootstrap.servers", "localhost:9092");
+		 properties.put("acks", "all");
+         properties.put("retries", 0);
+         properties.put("batch.size", 16384);
+         properties.put("linger.ms", 0);
+         properties.put("buffer.memory", 33554432);
+         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+         properties.put("block.on.buffer.full",true);
+         properties.put("group.id", "lulichat");
+		consumer=new KafkaConsumer<>(properties);
+		try {
+			consumer.subscribe(Arrays.asList("user82"));
+			while (!closed.get()) {
+				ConsumerRecords<String, String> records = consumer.poll(1000);
+				for (ConsumerRecord<String, String> record : records) {
+					System.out.println(record.key());
+					System.out.println(record.value());
+				}
+			}
+
+		} finally {
+			consumer.close();
+		}
+
+		
+
+	}
+
+}

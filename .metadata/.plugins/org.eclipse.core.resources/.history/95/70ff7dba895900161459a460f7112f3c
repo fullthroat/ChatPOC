@@ -1,0 +1,87 @@
+package com.lollibond.chat.domain;
+
+import java.io.Serializable;
+
+import org.springframework.cassandra.core.Ordering;
+import org.springframework.cassandra.core.PrimaryKeyType;
+import org.springframework.data.cassandra.mapping.PrimaryKeyClass;
+import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
+
+@PrimaryKeyClass
+public class ThreadId implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@PrimaryKeyColumn(name = "u1", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
+	private String fromUser;
+	@PrimaryKeyColumn(name = "u2", ordinal = 1, type = PrimaryKeyType.PARTITIONED)
+	private String toUser;
+
+	@PrimaryKeyColumn(name = "time", ordinal = 2, type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
+	private String time;
+
+	public String getFromUser() {
+		return fromUser;
+	}
+
+	public void setFromUser(String fromUser) {
+		this.fromUser = fromUser;
+	}
+
+	public String getToUser() {
+		return toUser;
+	}
+
+	public void setToUser(String toUser) {
+		this.toUser = toUser;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((fromUser == null) ? 0 : fromUser.hashCode());
+		result = prime * result + ((time == null) ? 0 : time.hashCode());
+		result = prime * result + ((toUser == null) ? 0 : toUser.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ThreadId other = (ThreadId) obj;
+		if (fromUser == null) {
+			if (other.fromUser != null)
+				return false;
+		} else if (!fromUser.equals(other.fromUser))
+			return false;
+		if (time == null) {
+			if (other.time != null)
+				return false;
+		} else if (!time.equals(other.time))
+			return false;
+		if (toUser == null) {
+			if (other.toUser != null)
+				return false;
+		} else if (!toUser.equals(other.toUser))
+			return false;
+		return true;
+	}
+
+}

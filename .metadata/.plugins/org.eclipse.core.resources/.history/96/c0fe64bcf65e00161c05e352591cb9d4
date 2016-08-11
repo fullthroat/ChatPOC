@@ -1,0 +1,39 @@
+package com.lollibond.chat.repo;
+
+public class ThreadListRepository {
+	
+	String tid;
+	String participants_list;
+	String name;
+	String admin_list;
+	
+	
+	public String getTid() {
+		return tid;
+	}
+	public void setTid(String tid) {
+		this.tid = tid;
+	}
+	public String getParticipants_list() {
+		return participants_list;
+	}
+	public void setParticipants_list(String participants_list) {
+		this.participants_list = participants_list;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getAdmin_list() {
+		return admin_list;
+	}
+	public void setAdmin_list(String admin_list) {
+		this.admin_list = admin_list;
+	}
+
+	
+	
+	
+}

@@ -1,0 +1,26 @@
+package com.lollibond.chat.repo;
+
+import java.util.List;
+
+public class MessageThreadRepository {
+	
+	
+	public List<String> getThread(String fromUser, String toUser){
+		
+		
+		String serverIp = "127.0.0.1";
+	    String keyspace = "pigeon";
+	    Cluster cluster = Cluster.builder()
+	            .addContactPoints(serverIp).withPort(9042)
+	            .build();
+
+	    Session session = cluster.connect(keyspace);
+
+
+	    String cqlStatement = "Select * from message_thread_121";
+	    for (Row row : session.execute(cqlStatement)) {
+	        System.out.println(row.toString());
+	    }
+	}
+
+}

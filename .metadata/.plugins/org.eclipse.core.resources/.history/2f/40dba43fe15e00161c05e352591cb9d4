@@ -1,0 +1,5 @@
+package com.lollibond.chat.data;
+
+public class NotificationCodec {
+
+}

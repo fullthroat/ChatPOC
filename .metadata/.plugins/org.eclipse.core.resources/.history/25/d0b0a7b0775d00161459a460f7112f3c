@@ -1,0 +1,14 @@
+package com.lollibond.chat.webservice;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class OTPWebService {
+
+	
+	public String getAuthenticationToken(@Param String uid){
+		
+		return null;
+	}
+	
+}

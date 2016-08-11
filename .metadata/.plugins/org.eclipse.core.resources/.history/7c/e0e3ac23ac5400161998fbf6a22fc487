@@ -1,0 +1,18 @@
+package com.lollibond.chat.service.impl;
+
+import java.util.List;
+
+import com.lollibond.chat.service.ThreadService;
+
+public class ThreadServiceImpl implements ThreadService{
+
+	
+	public boolean saveMessageToThread(String message, String fromUser, String toUser){
+		
+		return true;
+	}
+	
+	public List<MessageThread> pullThread(){
+		
+	}
+}

@@ -1,0 +1,76 @@
+package com.lollibond.chat.service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import com.lollibond.chat.domain.MessageThread;
+import com.lollibond.chat.domain.ThreadDetail;
+import com.lollibond.chat.domain.ThreadList;
+import com.lollibond.chat.repo.MessageThreadsRepository;
+import com.lollibond.chat.repo.ThreadDetailRepository;
+import com.lollibond.chat.repo.ThreadListRepository;
+
+public class GroupChatService {
+
+	private MessageThreadsRepository msgThreadRepository = new MessageThreadsRepository();
+	private ThreadDetailRepository threadDetailRepository = new ThreadDetailRepository();
+	private ThreadListRepository threadListRepository = new ThreadListRepository();
+
+	public String createGroup(ThreadDetail tD) {
+		String tid = UUID.randomUUID().toString();
+		threadDetailRepository.saveThreadDetail(tD);
+		return tid;
+	}
+
+	public String createGroup(String groupName, String participants, String admins, String creator) {
+		String tid = UUID.randomUUID().toString();
+		ThreadDetail threadDetail = new ThreadDetail();
+		threadDetail.setTid(tid);
+		threadDetail.setAdmins_list(admins);
+		threadDetail.setParticipants_list(participants);
+		threadDetail.setName(groupName);
+		createGroup(threadDetail);
+		ThreadList threadList = new ThreadList();
+		threadList.setHidden(false);
+		threadList.setHidefrom_date(null);
+		threadList.setLastread_time(new Date());
+		threadList.setTid(tid);
+		threadList.setUid(creator);
+		threadListRepository.save(threadList);
+		return tid;
+	}
+
+	public List<ThreadList> getRecentGroupChats(String uid) {
+
+		return threadListRepository.getThreadListByUID(uid, 10);
+	}
+
+	public void appendChatMessageToGroupThread(MessageThread thread) {
+		msgThreadRepository.saveMessage(thread);
+	}
+
+	public void addParticipantToGroup(String uid, String tid) {
+		ThreadDetail threadDetail = threadDetailRepository.fetchThreadDetail(tid);
+		List<String> list = threadDetail.getParticipantList();
+		list.add(uid);
+		threadDetailRepository.updateParticipantsList(threadDetail.getParticipants_list(), tid);
+	}
+
+	public void addAdminToGroup(String uid, String tid) {
+		ThreadDetail threadDetail = threadDetailRepository.fetchThreadDetail(tid);
+		List<String> list = threadDetail.getAdminsList();
+		list.add(uid);
+		threadDetailRepository.updateAdminsList(threadDetail.getAdmins_list(), tid);
+
+	}
+
+	public void deleteThread(String uid, String tid) {
+		threadListRepository.deleteChatThread(tid, uid);
+	}
+	
+	public List<String> getParticipants(String tid){
+		return threadDetailRepository.fetchThreadDetail(tid).getParticipantList();
+	}
+
+}

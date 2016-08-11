@@ -1,0 +1,7 @@
+package com.lollibond.chat.service.impl;
+
+import com.lollibond.chat.service.ThreadService;
+
+public class ThreadServiceImpl implements ThreadService{
+
+}

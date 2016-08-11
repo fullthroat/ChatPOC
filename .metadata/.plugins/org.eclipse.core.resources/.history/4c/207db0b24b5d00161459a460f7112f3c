@@ -1,0 +1,5 @@
+package com.lollibond.chat.webservice;
+
+public class OTPWebService {
+
+}

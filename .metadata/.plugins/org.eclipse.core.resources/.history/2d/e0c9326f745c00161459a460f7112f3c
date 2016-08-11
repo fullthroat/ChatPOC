@@ -1,0 +1,78 @@
+package com.lollibond.chat.domain;
+
+import java.util.Date;
+
+import org.springframework.cassandra.core.Ordering;
+import org.springframework.cassandra.core.PrimaryKeyType;
+import org.springframework.data.cassandra.mapping.CassandraType;
+import org.springframework.data.cassandra.mapping.Column;
+import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.mapping.Table;
+
+import com.datastax.driver.core.DataType.Name;
+
+@Table(value = "message_thread_121")
+public class MessageThread121 {
+
+	
+	
+	
+	@PrimaryKey
+	private ThreadId threadId;
+	
+	@PrimaryKeyColumn(name = "u1", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
+	@CassandraType(type=Name.VARCHAR)
+	private String u1;
+	
+	@PrimaryKeyColumn(name = "u2", ordinal = 1, type = PrimaryKeyType.PARTITIONED)
+	@CassandraType(type=Name.VARCHAR)
+	private String u2;
+
+	@PrimaryKeyColumn(name = "time", ordinal = 2, type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
+	@CassandraType(type=Name.TIMESTAMP)
+	private Date time;
+	
+	@Column("body")
+	@CassandraType(type=Name.VARCHAR)
+	private String body;
+	@Column("fromuser")
+	@CassandraType(type=Name.VARCHAR)
+	private String fromUser;
+	/*
+	 * @PrimaryKey private ThreadId threadId;
+	 */
+
+	public MessageThread121() {
+
+	}
+	
+	public ThreadId getThreadId() {
+		return threadId;
+	}
+
+
+
+	public void setThreadId(ThreadId threadId) {
+		this.threadId = threadId;
+	}
+
+
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public String getFromUser() {
+		return fromUser;
+	}
+
+	public void setFromUser(String fromUser) {
+		this.fromUser = fromUser;
+	}
+
+}
